@@ -17,7 +17,7 @@ namespace ControllerExamples.Controllers
     {
         [Route("/")]
         public async Task<ContentResult> Index() =>
-            await Task.FromResult(Content( "<h1>Hello from HelloMethod</h1>", "text/html"));
+            await Task.FromResult(Content($"<h1>Hello from Hello Method</h1><br /><h3>SessionId: <span style='color: red; background-color: yellow;'>{HttpContext.Session.Id}</h3>", "text/html"));
 
         [Route("person")]
         public async Task<JsonResult> Person() =>
@@ -48,6 +48,7 @@ namespace ControllerExamples.Controllers
         [HttpPost]
         public async Task<IActionResult> Persons([FromBody] Person model)
         {
+            model.SessionId = HttpContext.Session.Id;
             if (!ModelState.IsValid)
             {
                 /*

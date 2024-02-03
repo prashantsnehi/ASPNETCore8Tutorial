@@ -13,6 +13,7 @@
     <None Remove="Model\" />
     <None Remove="CustomValidator\" />
     <None Remove="CustomConstratint\" />
+    <None Remove="ServiceExtensions\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -20,6 +21,7 @@
     <Folder Include="wwwroot\" />
     <Folder Include="CustomValidator\" />
     <Folder Include="CustomConstratint\" />
+    <Folder Include="ServiceExtensions\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\" />

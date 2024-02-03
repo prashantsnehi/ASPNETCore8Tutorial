@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using ControllerExamples.CustomConstratint;
+using ControllerExamples.ServiceExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,10 +9,14 @@ builder.Services.AddRouting(options =>
     options.ConstraintMap.Add("months", typeof(MonthCustomConstraint)));
 */
 builder.Services.AddControllers(); // adds all the controller classes as services
+//builder.Services.AddMemoryCache();
+//builder.Services.AddSession();
+builder.Services.ConfigureSession();
 
 var app = builder.Build();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseSession();
 
 app.MapControllers();
 /*

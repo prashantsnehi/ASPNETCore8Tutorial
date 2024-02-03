@@ -9,7 +9,7 @@ public class Person : IValidatableObject
 	public string Id { get; set; } = Guid.NewGuid().ToString();
 
 	[Display(Name = "First Name")]
-	[RegularExpression("^[A-Za-z .]$",ErrorMessage = "{0} should contain only alphabets, space and (.)")]
+	[RegularExpression("^[A-Za-z .]*$",ErrorMessage = "{0} should contain only alphabets, space and (.)")]
 	public required string FirstName { get; set; }
 
     [Display(Name = "Last Name")]
@@ -39,6 +39,8 @@ public class Person : IValidatableObject
 	public required string ConfirmPassword { get; set; }
 
 	public DateTime? FromDate { get; set; }
+
+	public string? SessionId { get; set; }
 
 	[DateRaangeValidator("FromDate", ErrorMessage = "'From Date' should be older than 'To Date'")]
 	public DateTime? ToDate { get; set; }
