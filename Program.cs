@@ -1,9 +1,12 @@
 ﻿using System.Globalization;
+using ControllerExamples.CustomConstratint;
 
 var builder = WebApplication.CreateBuilder(args);
-//builder.Services.AddRouting(options =>
-    //options.ConstraintMap.Add("months", typeof(MonthCustomConstraint)));
 
+/*
+builder.Services.AddRouting(options =>
+    options.ConstraintMap.Add("months", typeof(MonthCustomConstraint)));
+*/
 builder.Services.AddControllers(); // adds all the controller classes as services
 
 var app = builder.Build();
@@ -11,7 +14,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.MapControllers();
-
+/*
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapGet("/employee/profile/{employeename:minlength(3)=prashant}", async (context) =>
@@ -65,6 +68,6 @@ app.Run(async (context) =>
 {
     await context.Response.WriteAsync($"<h1>No route found for path: {context.Request.Path}</h1>");
 });
-
+*/
 app.Run();
 

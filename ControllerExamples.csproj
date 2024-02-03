@@ -12,12 +12,14 @@
     <None Remove="Controllers\" />
     <None Remove="Model\" />
     <None Remove="CustomValidator\" />
+    <None Remove="CustomConstratint\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="Model\" />
     <Folder Include="wwwroot\" />
     <Folder Include="CustomValidator\" />
+    <Folder Include="CustomConstratint\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\" />
