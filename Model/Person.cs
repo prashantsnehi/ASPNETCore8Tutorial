@@ -10,12 +10,15 @@ public class Person : IValidatableObject
 
 	[Display(Name = "First Name")]
 	[RegularExpression("^[A-Za-z .]*$",ErrorMessage = "{0} should contain only alphabets, space and (.)")]
-	public required string FirstName { get; set; }
+	[Required]
+	public string? FirstName { get; set; }
 
     [Display(Name = "Last Name")]
     [RegularExpression("^[A-Za-z .]*$", ErrorMessage = "{0} should contain only alphabets, space and (.)")]
 	[ValidateNever]
     public string? LastName { get; set; }
+
+	public string? PersonName { get; set; }
 
 	[Display(Name = "Email Address")]
 	[EmailAddress(ErrorMessage = "Invalid {0}")]
@@ -23,7 +26,7 @@ public class Person : IValidatableObject
 
 	[Display(Name = "Phone Number")]
 	[Phone(ErrorMessage = "Invalid {0}")]
-	public required string Phone { get; set; }
+	public string Phone { get; set; }
 
 	[MinimumYearValidation(2000, ErrorMessage = "Year should not be greater than {0}")]
 	public DateTime? DateOfBirth { get; set; }
@@ -32,11 +35,11 @@ public class Person : IValidatableObject
 	public int? Age { get; set; }
 
 	[Required(ErrorMessage = "{0} can't be blank")]
-	public required string Password { get; set; }
+	public string Password { get; set; }
 
 	[Required(ErrorMessage = "{0} can't be blank")]
 	[Compare("Password", ErrorMessage = "{0} and {1} do not match")]
-	public required string ConfirmPassword { get; set; }
+	public string ConfirmPassword { get; set; }
 
 	public DateTime? FromDate { get; set; }
 

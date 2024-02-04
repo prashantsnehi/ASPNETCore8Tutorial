@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Text;
+using System.Text.Json;
+using ControllerExamples.CustomModelBinder;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,11 +21,30 @@ namespace ControllerExamples.Controllers
     public class HomeController : Controller
     {
         [Route("/")]
-        public async Task<ContentResult> Index() =>
-            await Task.FromResult(Content($"<h1>Hello from Hello Method</h1><br /><h3>SessionId: <span style='color: red; background-color: yellow;'>{HttpContext.Session.Id}</h3>", "text/html"));
+        public async Task<ContentResult> Index([FromHeader(Name = "User-Agent")] string userAgent)
+        {
+            string? accept = HttpContext.Request.Headers["Accept"],
+                acceptEncoding = HttpContext.Request.Headers["Accept-Encoding"],
+                acceptLanguage = HttpContext.Request.Headers["Accept-Language"],
+                connection = HttpContext.Request.Headers["Connection"],
+                host = HttpContext.Request.Headers["Host"];
+            StringBuilder str = new StringBuilder();
+            str.Append($"<h1>Hello from Hello Method</h1>")
+               .Append("<ol>")
+               .Append($"<li>Host: <span style='color:red; background-color: yellow;'>{host}</span></li>")
+               .Append($"<li>SessionId: <span style='color: red; background-color: yellow;'>{HttpContext.Session.Id}</li>")
+               .Append($"<li>Browser: <span style='color:red; background-color: yellow;'>{userAgent}</span></li>")
+               .Append($"<li>Accept: <span style='color:red; background-color: yellow;'>{accept}</span></li>")
+               .Append($"<li>Accept Encoding: <span style='color:red; background-color: yellow;'>{acceptEncoding}</span></li>")
+               .Append($"<li>Accept Language: <span style='color:red; background-color: yellow;'>{acceptLanguage}</span></li>")
+               .Append($"<li>Connection: <span style='color:red; background-color: yellow;'>{connection}</span></li>")
+               .Append("</ol>");
 
-        [Route("person")]
-        public async Task<JsonResult> Person() =>
+            return await Task.FromResult(Content(str.ToString(), "text/html"));
+        }
+
+        [Route("getPersonDetail")]
+        public async Task<JsonResult> GetPersonDetail() =>
             await Task.FromResult(Json(new Person() {
                 Id = Guid.NewGuid().ToString(),
                 FirstName = "Prashant",
@@ -46,9 +70,12 @@ namespace ControllerExamples.Controllers
             await Task.FromResult(File(System.IO.File.ReadAllBytes("/Users/psnehi/Pictures/amazon.jpeg"), "image/jpeg"));
         [Route("persons")]
         [HttpPost]
-        public async Task<IActionResult> Persons([FromBody] Person model)
+        //[Bind(nameof(Person.FirstName), nameof(Person.LastName), nameof(Person.Email))]
+        //[ModelBinder(BinderType = typeof(PersonModelBinder))]
+        public async Task<IActionResult> Persons([FromBody][ModelBinder(BinderType = typeof(PersonModelBinder))] Person person)
         {
-            model.SessionId = HttpContext.Session.Id;
+            person.SessionId = HttpContext.Session.Id;
+           
             if (!ModelState.IsValid)
             {
                 /*
@@ -67,7 +94,7 @@ namespace ControllerExamples.Controllers
 
                 return await Task.FromResult(BadRequest(error));
             }
-            return await Task.FromResult(Json(model));
+            return await Task.FromResult(Json(person));
         }
     }
 }
