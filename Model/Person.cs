@@ -26,6 +26,7 @@ public class Person : IValidatableObject
 
 	[Display(Name = "Phone Number")]
 	[Phone(ErrorMessage = "Invalid {0}")]
+	[MinLength(10, ErrorMessage = "{0} number must contain at least {1} numbers"), MaxLength(10, ErrorMessage = "{0} number can't exceed {1} numbers")]
 	public string Phone { get; set; }
 
 	[MinimumYearValidation(2000, ErrorMessage = "Year should not be greater than {0}")]

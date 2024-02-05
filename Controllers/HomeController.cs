@@ -72,9 +72,10 @@ namespace ControllerExamples.Controllers
         [HttpPost]
         //[Bind(nameof(Person.FirstName), nameof(Person.LastName), nameof(Person.Email))]
         //[ModelBinder(BinderType = typeof(PersonModelBinder))]
-        public async Task<IActionResult> Persons([FromBody][ModelBinder(BinderType = typeof(PersonModelBinder))] Person person)
+        public async Task<IActionResult> Persons([FromBody] Person person)
         {
             person.SessionId = HttpContext.Session.Id;
+            person.PersonName = string.Concat(person.FirstName, " ", person.LastName);
            
             if (!ModelState.IsValid)
             {
@@ -94,7 +95,13 @@ namespace ControllerExamples.Controllers
 
                 return await Task.FromResult(BadRequest(error));
             }
-            return await Task.FromResult(Json(person));
+            var options = new JsonSerializerOptions()
+            {
+                WriteIndented = true,
+                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+            return await Task.FromResult(Json(person, options));
         }
     }
 }
