@@ -1,6 +1,8 @@
 ﻿using System.Text;
 using System.Text.Json;
 using ControllerExamples.CustomModelBinder;
+using ControllerExamples.Model;
+using ControllerExamples.ServiceContracts;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
@@ -20,35 +22,72 @@ namespace ControllerExamples.Controllers
 
     public class HomeController : Controller
     {
-        [Route("/")]
-        public async Task<ContentResult> Index([FromHeader(Name = "User-Agent")] string userAgent)
+        private readonly ICityServices _cityServices;
+        private readonly ICityServices _cityServices1;
+        private readonly ICityServices _cityServices2;
+        private readonly ICityServices _cityServices3;
+        public HomeController(ICityServices cityServices,
+            ICityServices cityServices1,
+            ICityServices cityServices2,
+            ICityServices cityServices3)
         {
-            string? accept = HttpContext.Request.Headers["Accept"],
-                acceptEncoding = HttpContext.Request.Headers["Accept-Encoding"],
-                acceptLanguage = HttpContext.Request.Headers["Accept-Language"],
-                connection = HttpContext.Request.Headers["Connection"],
-                host = HttpContext.Request.Headers["Host"];
-            StringBuilder str = new StringBuilder();
-            str.Append($"<h1>Hello from Hello Method</h1>")
-               .Append("<ol>")
-               .Append($"<li>Host: <span style='color:red; background-color: yellow;'>{host}</span></li>")
-               .Append($"<li>SessionId: <span style='color: red; background-color: yellow;'>{HttpContext.Session.Id}</li>")
-               .Append($"<li>Browser: <span style='color:red; background-color: yellow;'>{userAgent}</span></li>")
-               .Append($"<li>Accept: <span style='color:red; background-color: yellow;'>{accept}</span></li>")
-               .Append($"<li>Accept Encoding: <span style='color:red; background-color: yellow;'>{acceptEncoding}</span></li>")
-               .Append($"<li>Accept Language: <span style='color:red; background-color: yellow;'>{acceptLanguage}</span></li>")
-               .Append($"<li>Connection: <span style='color:red; background-color: yellow;'>{connection}</span></li>")
-               .Append("</ol>");
+            _cityServices = cityServices;
+            _cityServices1 = cityServices1;
+            _cityServices2 = cityServices2;
+            _cityServices3 = cityServices3;
+        }
 
-            return await Task.FromResult(Content(str.ToString(), "text/html"));
+        [Route("/")]
+        public async Task<IActionResult> Index([FromHeader(Name = "User-Agent")] string userAgent)
+        {
+            //string? accept = HttpContext.Request.Headers["Accept"],
+            //    acceptEncoding = HttpContext.Request.Headers["Accept-Encoding"],
+            //    acceptLanguage = HttpContext.Request.Headers["Accept-Language"],
+            //    connection = HttpContext.Request.Headers["Connection"],
+            //    host = HttpContext.Request.Headers["Host"];
+            //StringBuilder str = new StringBuilder();
+            //str.Append($"<h1>Hello from Hello Method</h1>")
+            //   .Append("<ol>")
+            //   .Append($"<li>Host: <span style='color:red; background-color: yellow;'>{host}</span></li>")
+            //   .Append($"<li>SessionId: <span style='color: red; background-color: yellow;'>{HttpContext.Session.Id}</li>")
+            //   .Append($"<li>Browser: <span style='color:red; background-color: yellow;'>{userAgent}</span></li>")
+            //   .Append($"<li>Accept: <span style='color:red; background-color: yellow;'>{accept}</span></li>")
+            //   .Append($"<li>Accept Encoding: <span style='color:red; background-color: yellow;'>{acceptEncoding}</span></li>")
+            //   .Append($"<li>Accept Language: <span style='color:red; background-color: yellow;'>{acceptLanguage}</span></li>")
+            //   .Append($"<li>Connection: <span style='color:red; background-color: yellow;'>{connection}</span></li>")
+            //   .Append("</ol>");
+
+            var requestHeaders = new DefaultInformations()
+            {
+                Accept = HttpContext.Request.Headers["accept"],
+                AcceptEncoding = HttpContext.Request.Headers["Accept-Encoding"],
+                AcceptLanguage = HttpContext.Request.Headers["Accept-Language"],
+                Connection = HttpContext.Request.Headers["Connection"],
+                Host = HttpContext.Request.Headers["Host"],
+                UserAgent = userAgent
+            };
+
+            ViewBag.InstanceId = _cityServices.InstanceId;
+            ViewBag.InstanceId1 = _cityServices1.InstanceId;
+            ViewBag.InstanceId2 = _cityServices2.InstanceId;
+            ViewBag.InstanceId3 = _cityServices3.InstanceId;
+
+            ViewBag.Cities = await _cityServices.GetCities();
+
+
+            return await Task.FromResult(View(requestHeaders));
+            //return await Task.FromResult(Content(str.ToString(), "text/html"));
         }
 
         [Route("getPersonDetail")]
         public async Task<JsonResult> GetPersonDetail() =>
-            await Task.FromResult(Json(new Person() {
+            await Task.FromResult(Json(new Person()
+            {
                 Id = Guid.NewGuid().ToString(),
                 FirstName = "Prashant",
-                LastName = "Snehi", Age = 46, Phone = "9810013306",
+                LastName = "Snehi",
+                Age = 46,
+                Phone = "9810013306",
                 Password = "abcd@123",
                 ConfirmPassword = "abcd@123"
             }));
@@ -76,7 +115,7 @@ namespace ControllerExamples.Controllers
         {
             person.SessionId = HttpContext.Session.Id;
             person.PersonName = string.Concat(person.FirstName, " ", person.LastName);
-           
+
             if (!ModelState.IsValid)
             {
                 /*

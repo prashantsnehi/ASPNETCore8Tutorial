@@ -1,6 +1,8 @@
 ﻿using System.Globalization;
 using ControllerExamples.CustomConstratint;
+using ControllerExamples.ServiceContracts;
 using ControllerExamples.ServiceExtensions;
+using ControllerExamples.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +10,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRouting(options =>
     options.ConstraintMap.Add("months", typeof(MonthCustomConstraint)));
 */
-builder.Services.AddControllers(); // adds all the controller classes as services
+
+builder.Services.Add(new ServiceDescriptor(
+    typeof(ICityServices),
+    typeof(CityServices),
+    ServiceLifetime.Transient
+));
+
+builder.Services.AddControllersWithViews(); // adds all the controller classes as services
 //builder.Services.AddMemoryCache();
 //builder.Services.AddSession();
 builder.Services.ConfigureSession();

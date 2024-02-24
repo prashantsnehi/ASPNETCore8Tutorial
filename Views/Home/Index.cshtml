@@ -1,0 +1,30 @@
+﻿@model ControllerExamples.Model.DefaultInformations
+
+<h1>Basic Informations</h1>
+<h4>Accept: @Model.Accept</h4>
+<h4>Accept Encoding: @Model.AcceptEncoding</h4>
+<h4>Accept Language: @Model.AcceptLanguage</h4>
+<h4>Connection: @Model.Connection</h4>
+<h4>Host: @Model.Host</h4>
+<h4>Browser: @Model.UserAgent</h4>
+
+<hr />
+
+<ol>
+    @foreach (string city in ViewBag.Cities)
+    {
+        <li>@city</li>
+    }
+</ol>
+
+<hr />
+<partial name="_DIExamplesPartialView" />
+
+@*<hr />
+    @await Html.PartialAsync("_DIExamplesPartialView");
+
+    <hr />
+
+    @{
+        await Html.RenderPartialAsync("_DIExamplesPartialView");
+    }*@

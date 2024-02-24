@@ -15,6 +15,12 @@
     <None Remove="CustomConstratint\" />
     <None Remove="ServiceExtensions\" />
     <None Remove="CustomModelBinder\" />
+    <None Remove="Helpers\" />
+    <None Remove="ServiceContracts\" />
+    <None Remove="Services\" />
+    <None Remove="Views\" />
+    <None Remove="Views\Home\" />
+    <None Remove="Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -24,6 +30,12 @@
     <Folder Include="CustomConstratint\" />
     <Folder Include="ServiceExtensions\" />
     <Folder Include="CustomModelBinder\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="ServiceContracts\" />
+    <Folder Include="Services\" />
+    <Folder Include="Views\" />
+    <Folder Include="Views\Home\" />
+    <Folder Include="Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\" />
