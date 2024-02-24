@@ -1,30 +1,18 @@
 ﻿@model ControllerExamples.Model.DefaultInformations
 
-<h1>Basic Informations</h1>
-<h4>Accept: @Model.Accept</h4>
-<h4>Accept Encoding: @Model.AcceptEncoding</h4>
-<h4>Accept Language: @Model.AcceptLanguage</h4>
-<h4>Connection: @Model.Connection</h4>
-<h4>Host: @Model.Host</h4>
-<h4>Browser: @Model.UserAgent</h4>
+<h1>Basic information from Partial View using Model Class</h1>
+<partial name="_BasicInformationPartialView" model="@Model"></partial>
 
 <hr />
 
-<ol>
-    @foreach (string city in ViewBag.Cities)
-    {
-        <li>@city</li>
-    }
-</ol>
+<h1>Cities from City Partial View using ViewBag</h1>
+<h3>Command: await Html.PartialAsync("_CityPartialView")</h3>
+@await Html.PartialAsync("_CityPartialView")
 
 <hr />
-<partial name="_DIExamplesPartialView" />
+<h1>Using DI Instance testing for different Scoppes</h1>
+<h3>Command: await Html.RenderPartialAsync("_DIExamplesPartialView")</h3>
 
-@*<hr />
-    @await Html.PartialAsync("_DIExamplesPartialView");
-
-    <hr />
-
-    @{
-        await Html.RenderPartialAsync("_DIExamplesPartialView");
-    }*@
+@{
+    await Html.RenderPartialAsync("_DIExamplesPartialView");
+}
