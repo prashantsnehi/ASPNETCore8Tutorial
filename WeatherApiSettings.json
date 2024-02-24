@@ -1,0 +1,7 @@
+﻿{
+  "WeatherAppConfig": {
+    "ClientId": "client id from WeatherApiSettings.json",
+    "ClientSecret": "client secret from WeatherApiSettings.json"
+  }
+}
+

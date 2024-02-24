@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using ControllerExamples.CustomConstratint;
+using ControllerExamples.Model;
 using ControllerExamples.ServiceContracts;
 using ControllerExamples.ServiceExtensions;
 using ControllerExamples.Services;
@@ -17,12 +18,25 @@ builder.Services.Add(new ServiceDescriptor(
     ServiceLifetime.Transient
 ));
 
+
 builder.Services.AddControllersWithViews(); // adds all the controller classes as services
 //builder.Services.AddMemoryCache();
 //builder.Services.AddSession();
+builder.Services.Configure<WeatherAppConfig>(builder.Configuration.GetSection("WeatherAppConfig"));
+builder.Services.Configure<OtherSettings>(builder.Configuration.GetSection("OtherSettings"));
+
+// loading custome json file
+//builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
+//{
+//    config.AddJsonFile("WeatherApiSettings.json", optional: true, reloadOnChange: true);
+//});
+builder.Configuration.AddJsonFile("WeatherApiSettings.json", optional: true, reloadOnChange: true);
+
 builder.Services.ConfigureSession();
 
 var app = builder.Build();
+//app.Configuration.GetSection("WeatherAppConfig").Get<WeatherAppConfig>();
+
 app.UseStaticFiles();
 app.UseRouting();
 app.UseSession();

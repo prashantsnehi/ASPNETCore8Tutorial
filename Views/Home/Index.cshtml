@@ -1,10 +1,12 @@
 ﻿@model ControllerExamples.Model.DefaultInformations
 
+@await Html.PartialAsync("_AppSettingsPartialView")
+
+<hr />
 <h1>Basic information from Partial View using Model Class</h1>
 <partial name="_BasicInformationPartialView" model="@Model"></partial>
 
 <hr />
-
 <h1>Cities from City Partial View using ViewBag</h1>
 <h3>Command: await Html.PartialAsync("_CityPartialView")</h3>
 @await Html.PartialAsync("_CityPartialView")

@@ -5,6 +5,7 @@ using ControllerExamples.Model;
 using ControllerExamples.ServiceContracts;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -27,17 +28,28 @@ namespace ControllerExamples.Controllers
         private readonly ICityServices _cityServices2;
         private readonly ICityServices _cityServices3;
         private readonly IWebHostEnvironment _webHostEnvironment;
+
+
+
+        // use of weatherapiconfig from appsettins.json as service
+        private readonly WeatherAppConfig _config;
+        private readonly OtherSettings _otherSettings;
+
         public HomeController(ICityServices cityServices,
             ICityServices cityServices1,
             ICityServices cityServices2,
             ICityServices cityServices3,
-            IWebHostEnvironment webHostEnvironment)
+            IWebHostEnvironment webHostEnvironment,
+            IOptions<WeatherAppConfig> config,
+            IOptions<OtherSettings> otherSettings)
         {
             _cityServices = cityServices;
             _cityServices1 = cityServices1;
             _cityServices2 = cityServices2;
             _cityServices3 = cityServices3;
             _webHostEnvironment = webHostEnvironment;
+            _config = config.Value;
+            _otherSettings = otherSettings.Value;
         }
 
         [Route("/")]
@@ -76,7 +88,10 @@ namespace ControllerExamples.Controllers
             ViewBag.InstanceId3 = _cityServices3.InstanceId;
 
             ViewBag.Cities = await _cityServices.GetCities();
+            //var weatherConfig = _config.GetSection("WeatherAppConfig").Get<WeatherAppConfig>();
 
+            ViewBag.WeatherConfig = _config;
+            ViewBag.OtherSettings = _otherSettings;
 
             return await Task.FromResult(View(requestHeaders));
             //return await Task.FromResult(Content(str.ToString(), "text/html"));
