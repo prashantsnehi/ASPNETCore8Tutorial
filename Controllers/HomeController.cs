@@ -26,15 +26,18 @@ namespace ControllerExamples.Controllers
         private readonly ICityServices _cityServices1;
         private readonly ICityServices _cityServices2;
         private readonly ICityServices _cityServices3;
+        private readonly IWebHostEnvironment _webHostEnvironment;
         public HomeController(ICityServices cityServices,
             ICityServices cityServices1,
             ICityServices cityServices2,
-            ICityServices cityServices3)
+            ICityServices cityServices3,
+            IWebHostEnvironment webHostEnvironment)
         {
             _cityServices = cityServices;
             _cityServices1 = cityServices1;
             _cityServices2 = cityServices2;
             _cityServices3 = cityServices3;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [Route("/")]
