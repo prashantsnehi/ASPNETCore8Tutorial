@@ -12,19 +12,19 @@ builder.Services.AddRouting(options =>
     options.ConstraintMap.Add("months", typeof(MonthCustomConstraint)));
 */
 
+builder.Services.AddHttpClient();
 builder.Services.Add(new ServiceDescriptor(
     typeof(ICityServices),
     typeof(CityServices),
     ServiceLifetime.Transient
 ));
 
-
+builder.Services.AddTransient<IWeatherService, WeatherService>();
 builder.Services.AddControllersWithViews(); // adds all the controller classes as services
 //builder.Services.AddMemoryCache();
 //builder.Services.AddSession();
 builder.Services.Configure<WeatherAppConfig>(builder.Configuration.GetSection("WeatherAppConfig"));
 builder.Services.Configure<OtherSettings>(builder.Configuration.GetSection("OtherSettings"));
-builder.Services.AddHttpClient();
 
 // loading custome json file
 //builder.Host.ConfigureAppConfiguration((hostingContext, config) =>

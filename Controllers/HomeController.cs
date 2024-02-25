@@ -29,6 +29,7 @@ namespace ControllerExamples.Controllers
         private readonly ICityServices _cityServices2;
         private readonly ICityServices _cityServices3;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IWeatherService _weatherService;
 
 
 
@@ -44,7 +45,8 @@ namespace ControllerExamples.Controllers
             IWebHostEnvironment webHostEnvironment,
             IOptions<WeatherAppConfig> config,
             IOptions<OtherSettings> otherSettings,
-            IHttpClientFactory httpClient)
+            IHttpClientFactory httpClient,
+            IWeatherService weatherService)
         {
             _cityServices = cityServices;
             _cityServices1 = cityServices1;
@@ -54,6 +56,7 @@ namespace ControllerExamples.Controllers
             _config = config.Value;
             _otherSettings = otherSettings.Value;
             _httpClient = httpClient;
+            _weatherService = weatherService;
         }
 
         //[Route("/")]
@@ -180,12 +183,17 @@ namespace ControllerExamples.Controllers
                 UserAgent = HttpContext.Request.Headers["User-Agent"]
             };
 
-            return await Task.FromResult(Json(JsonSerializer.Serialize(requestHeaders,
-                new JsonSerializerOptions()
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                })));
+            var response = await _weatherService.GetWeatherForcast();
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            //return await Task.FromResult(Json(JsonSerializer.Serialize(requestHeaders,
+            //    new JsonSerializerOptions()
+            //    {
+            //        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            //    })));
+            return await Task.FromResult(Json(responseString));
         }
+
     }
 }
 
