@@ -44,13 +44,18 @@ app.UseSession();
 
 app.MapControllers();
 
-app.UseEndpoints(endpoint =>
-{
-    endpoint.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=home}/{action=index}/{id?}"
-    );
-});
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=home}/{action=index}/{id?}"
+);
+
+//app.UseEndpoints(endpoint =>
+//{
+//    endpoint.MapControllerRoute(
+//        name: "default",
+//        pattern: "{controller=home}/{action=index}/{id?}"
+//    );
+//});
 /*
 app.UseEndpoints(endpoints =>
 {
