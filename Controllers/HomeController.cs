@@ -5,6 +5,7 @@ using ControllerExamples.Model;
 using ControllerExamples.ServiceContracts;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 
@@ -34,6 +35,7 @@ namespace ControllerExamples.Controllers
         // use of weatherapiconfig from appsettins.json as service
         private readonly WeatherAppConfig _config;
         private readonly OtherSettings _otherSettings;
+        private readonly IHttpClientFactory _httpClient;
 
         public HomeController(ICityServices cityServices,
             ICityServices cityServices1,
@@ -41,7 +43,8 @@ namespace ControllerExamples.Controllers
             ICityServices cityServices3,
             IWebHostEnvironment webHostEnvironment,
             IOptions<WeatherAppConfig> config,
-            IOptions<OtherSettings> otherSettings)
+            IOptions<OtherSettings> otherSettings,
+            IHttpClientFactory httpClient)
         {
             _cityServices = cityServices;
             _cityServices1 = cityServices1;
@@ -50,9 +53,10 @@ namespace ControllerExamples.Controllers
             _webHostEnvironment = webHostEnvironment;
             _config = config.Value;
             _otherSettings = otherSettings.Value;
+            _httpClient = httpClient;
         }
 
-        [Route("/")]
+        //[Route("/")]
         public async Task<IActionResult> Index([FromHeader(Name = "User-Agent")] string userAgent)
         {
             //string? accept = HttpContext.Request.Headers["Accept"],
@@ -97,7 +101,7 @@ namespace ControllerExamples.Controllers
             //return await Task.FromResult(Content(str.ToString(), "text/html"));
         }
 
-        [Route("getPersonDetail")]
+        //[Route("getPersonDetail")]
         public async Task<JsonResult> GetPersonDetail() =>
             await Task.FromResult(Json(new Person()
             {
@@ -110,22 +114,23 @@ namespace ControllerExamples.Controllers
                 ConfirmPassword = "abcd@123"
             }));
 
-        [Route("fileDownload1")]
+        //[Route("fileDownload1")]
         public async Task<FileResult> fileDownload1() =>
             await Task.FromResult(new VirtualFileResult("/amazon.jpeg", "image/jpeg"));
 
-        [Route("fileDownload2")]
+        //[Route("fileDownload2")]
         public async Task<FileResult> fileDownload2() =>
             await Task.FromResult(new PhysicalFileResult("/Users/psnehi/Pictures/amazon.jpeg", "image/jpeg"));
 
-        [Route("fileDownload3")]
+        //[Route("fileDownload3")]
         public async Task<FileResult> fileDownload3() =>
             await Task.FromResult(new FileContentResult(System.IO.File.ReadAllBytes("/Users/psnehi/Pictures/amazon.jpeg"), "image/jpeg"));
 
-        [Route("fileDownload4")]
+        //[Route("fileDownload4")]
         public async Task<FileResult> fileDownload4() =>
             await Task.FromResult(File(System.IO.File.ReadAllBytes("/Users/psnehi/Pictures/amazon.jpeg"), "image/jpeg"));
-        [Route("persons")]
+
+        //[Route("persons")]
         [HttpPost]
         //[Bind(nameof(Person.FirstName), nameof(Person.LastName), nameof(Person.Email))]
         //[ModelBinder(BinderType = typeof(PersonModelBinder))]
@@ -159,6 +164,27 @@ namespace ControllerExamples.Controllers
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
             return await Task.FromResult(Json(person, options));
+        }
+
+        //[Route("get-weather-info")]
+        [HttpGet]
+        public async Task<IActionResult> GetWeatherInfo()
+        {
+            var requestHeaders = new DefaultInformations()
+            {
+                Accept = HttpContext.Request.Headers["accept"],
+                AcceptEncoding = HttpContext.Request.Headers["Accept-Encoding"],
+                AcceptLanguage = HttpContext.Request.Headers["Accept-Language"],
+                Connection = HttpContext.Request.Headers["Connection"],
+                Host = HttpContext.Request.Headers["Host"],
+                UserAgent = HttpContext.Request.Headers["User-Agent"]
+            };
+
+            return await Task.FromResult(Json(JsonSerializer.Serialize(requestHeaders,
+                new JsonSerializerOptions()
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                })));
         }
     }
 }

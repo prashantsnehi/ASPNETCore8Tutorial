@@ -24,6 +24,7 @@ builder.Services.AddControllersWithViews(); // adds all the controller classes a
 //builder.Services.AddSession();
 builder.Services.Configure<WeatherAppConfig>(builder.Configuration.GetSection("WeatherAppConfig"));
 builder.Services.Configure<OtherSettings>(builder.Configuration.GetSection("OtherSettings"));
+builder.Services.AddHttpClient();
 
 // loading custome json file
 //builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
@@ -42,6 +43,14 @@ app.UseRouting();
 app.UseSession();
 
 app.MapControllers();
+
+app.UseEndpoints(endpoint =>
+{
+    endpoint.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=home}/{action=index}/{id?}"
+    );
+});
 /*
 app.UseEndpoints(endpoints =>
 {
