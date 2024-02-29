@@ -21,6 +21,8 @@
     <None Remove="Views\" />
     <None Remove="Views\Home\" />
     <None Remove="Views\Shared\" />
+    <None Remove="Entity\" />
+    <None Remove="Model\Countries\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -36,6 +38,8 @@
     <Folder Include="Views\" />
     <Folder Include="Views\Home\" />
     <Folder Include="Views\Shared\" />
+    <Folder Include="Entity\" />
+    <Folder Include="Model\Countries\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\" />
