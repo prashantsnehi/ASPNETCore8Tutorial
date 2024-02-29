@@ -27,7 +27,7 @@ public class Person : IValidatableObject
 	[Display(Name = "Phone Number")]
 	[Phone(ErrorMessage = "Invalid {0}")]
 	[MinLength(10, ErrorMessage = "{0} number must contain at least {1} numbers"), MaxLength(10, ErrorMessage = "{0} number can't exceed {1} numbers")]
-	public string Phone { get; set; }
+	public string? Phone { get; set; }
 
 	[MinimumYearValidation(2000, ErrorMessage = "Year should not be greater than {0}")]
 	public DateTime? DateOfBirth { get; set; }
@@ -36,11 +36,11 @@ public class Person : IValidatableObject
 	public int? Age { get; set; }
 
 	[Required(ErrorMessage = "{0} can't be blank")]
-	public string Password { get; set; }
+	public string? Password { get; set; }
 
 	[Required(ErrorMessage = "{0} can't be blank")]
 	[Compare("Password", ErrorMessage = "{0} and {1} do not match")]
-	public string ConfirmPassword { get; set; }
+	public string? ConfirmPassword { get; set; }
 
 	public DateTime? FromDate { get; set; }
 

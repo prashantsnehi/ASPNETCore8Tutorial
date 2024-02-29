@@ -1,4 +1,5 @@
-﻿using ControllerExamples.Model.Countries;
+﻿using ControllerExamples.Entity;
+using ControllerExamples.Model.Countries;
 using ControllerExamples.ServiceContracts;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 
@@ -6,9 +7,34 @@ namespace ControllerExamples.Services;
 
 public class CountryService : ICountryService
 {
+    private readonly List<Country> _countries;
+    public CountryService()
+    {
+        _countries = new List<Country>();
+    }
     public CountryResponseDto AddCountry(CountryAddRequestDto? model)
     {
-        throw new NotImplementedException();
+        // Validation: Country model is null
+        if (model is null) throw new ArgumentNullException(nameof(CountryAddRequestDto));
+
+        // Validation: CountryName should not be null
+        if (model?.CountryName is null) throw new ArgumentException(nameof(model.CountryName));
+
+        // Validation CountryName can't be duplicate
+        if (_countries.Where(temp => temp.CountryName.Equals(model.CountryName)).Count() > 0)
+            throw new ArgumentException(nameof(model.CountryName));
+
+        // Convert object from requestdto to entity
+        var entity = model.ToCountry();
+
+        // Generate CountryId
+        entity.CountryId = Guid.NewGuid();
+
+        // add entity to the list
+        _countries.Add(entity);
+
+        // return CountryResponseDto
+        return entity.ToCountryResponse();
     }
 }
 
