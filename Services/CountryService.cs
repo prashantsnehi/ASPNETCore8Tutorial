@@ -22,7 +22,7 @@ public class CountryService : ICountryService
 
         // Validation CountryName can't be duplicate
         if (_countries.Where(temp => temp.CountryName.Equals(model.CountryName)).Count() > 0)
-            throw new ArgumentException(nameof(model.CountryName));
+            throw new ArgumentException("CountryName already exists");
 
         // Convert object from requestdto to entity
         var entity = model.ToCountry();
