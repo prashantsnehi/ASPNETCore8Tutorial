@@ -36,5 +36,8 @@ public class CountryService : ICountryService
         // return CountryResponseDto
         return entity.ToCountryResponse();
     }
+
+    public List<CountryResponseDto> GetAllCountries() =>
+        _countries.Select(country => country.ToCountryResponse()).ToList();
 }
 

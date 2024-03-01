@@ -13,5 +13,11 @@ public interface ICountryService
     /// <param name="model"></param>
     /// <returns>Returns the country object after adding the country to the list</returns>
     CountryResponseDto AddCountry(CountryAddRequestDto? model);
+
+    /// <summary>
+    /// Get all countries from the country list
+    /// </summary>
+    /// <returns>List of CountryResponse Dto</returns>
+    List<CountryResponseDto> GetAllCountries();
 }
 

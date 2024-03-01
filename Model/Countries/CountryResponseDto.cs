@@ -13,7 +13,7 @@ namespace ControllerExamples.Model.Countries
         public override bool Equals(object? obj)
         {
             if (obj is null) return false;
-            if (obj.GetType() != typeof(CountryAddRequestDto)) return false;
+            if (obj.GetType() != typeof(CountryResponseDto)) return false;
 
             CountryResponseDto countryToCompare = obj as CountryResponseDto;
             return countryToCompare?.CountryId == this.CountryId
