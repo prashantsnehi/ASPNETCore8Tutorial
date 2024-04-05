@@ -38,6 +38,16 @@ builder.Services.ConfigureSession();
 var app = builder.Build();
 //app.Configuration.GetSection("WeatherAppConfig").Get<WeatherAppConfig>();
 
+app.Use(async (context, next) =>
+{
+    if (context.Request.Headers["user-agent"].Contains("apple"))
+    {
+        context?.Response?.WriteAsync("Thanks for using apple phone");
+    };
+
+    await next(context!);
+});
+
 app.UseStaticFiles();
 app.UseRouting();
 app.UseSession();

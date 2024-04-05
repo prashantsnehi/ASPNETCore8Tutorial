@@ -20,6 +20,7 @@ public class CityServices : ICityServices
 
     public Guid InstanceId { get { return _instanceId; } }
 
-    public async Task<List<string>> GetCities() => await Task.FromResult(_cities);
+    public async Task<List<string>> GetCities() =>
+		await Task.FromResult(_cities);
 }
 

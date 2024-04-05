@@ -39,5 +39,12 @@ public class CountryService : ICountryService
 
     public List<CountryResponseDto> GetAllCountries() =>
         _countries.Select(country => country.ToCountryResponse()).ToList();
+
+    public CountryResponseDto? GetCountryById(Guid? countryId)
+    {
+        if (countryId is null) return null;
+
+        return _countries.Select(countryDto => countryDto.ToCountryResponse()).FirstOrDefault(temp => temp.CountryId.Equals(countryId));
+    }
 }
 

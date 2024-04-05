@@ -100,6 +100,7 @@ namespace ControllerExamples.Controllers
             ViewBag.WeatherConfig = _config;
             ViewBag.OtherSettings = _otherSettings;
 
+
             return await Task.FromResult(View(requestHeaders));
             //return await Task.FromResult(Content(str.ToString(), "text/html"));
         }
@@ -192,6 +193,19 @@ namespace ControllerExamples.Controllers
             //        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             //    })));
             return await Task.FromResult(Json(responseString));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetStudentInfo([FromBody] Student student)
+        {
+            if (!ModelState.IsValid)
+            {
+                string errors = string.Join("\n", ModelState.SelectMany(val => val.Value.Errors).Select(err => err.ErrorMessage));
+                return BadRequest(errors);
+            }
+                
+
+            return await Task.FromResult(Json(JsonSerializer.Serialize(student)));
         }
 
     }
