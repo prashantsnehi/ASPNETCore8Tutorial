@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools {
-        msbuild 'MSBuild 2022'
+        msbuild 'MSBuild'
     }
     stages {
         stage('Build') {
