@@ -23,6 +23,6 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore ./ControllerExamples.csproj
     - name: Build
-      run: dotnet ./ControllerExamples.sln build --no-restore
+      run: dotnet build ./ControllerExamples.sln --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
